@@ -33,7 +33,7 @@ public class CartController {
 	public ResponseEntity<?> getAllCartDetails()
 	{
 		List<Cart> cart = dao.findAll();		
-		return ResponseEntity.ok(cart);
+		return new ResponseEntity<>(new ResponseDTO("success","Cart Details fetched.",cart),HttpStatus.OK);
 	}
 	
 	//REST API to find the cart items by menu_id
