@@ -32,11 +32,11 @@ public class Cart {
 		super();
 	}
 
-	public Cart(Integer id, Integer menu_id,String mname, float price, float total_amount, Integer quantity) {
+	public Cart(Integer id, Integer menu_id, String mname, float price, float total_amount, Integer quantity) {
 		super();
 		this.id = id;
 		this.menu_id = menu_id;
-		this.mname=mname;
+		this.mname = mname;
 		this.price = price;
 		this.total_amount = total_amount;
 		this.quantity = quantity;
@@ -76,7 +76,7 @@ public class Cart {
 	}
 
 	public float getTotal_amount() {
-		return total_amount;
+		return (this.getPrice()*this.getQuantity());
 	}
 
 	public void setTotal_amount(float total_amount) {

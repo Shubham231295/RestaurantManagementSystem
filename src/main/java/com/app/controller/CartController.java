@@ -51,7 +51,7 @@ public class CartController {
 	@PostMapping
 	public ResponseEntity<?> addMenuInCartDetails(@RequestBody Cart c) {
 		System.out.println("in add MenuCart" + c);
-		return new ResponseEntity<>(new ResponseDTO("success","New Items added in cart.",dao.save(c)), HttpStatus.CREATED);
+		return new ResponseEntity<>(new ResponseDTO("success","New Items added in cart.", dao.save(c)), HttpStatus.CREATED);
 	}
 	
 	@PutMapping("/{cartId}")
