@@ -41,7 +41,7 @@ public class EmployeeController {
 		List<Employee> employees = service.getAllEmployees();
 		if(employees.isEmpty())
 		{
-			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+			return new ResponseEntity<>(new ResponseDTO("error","Employee list fetching failed" ,null),HttpStatus.NO_CONTENT);
 		}
 		return new ResponseEntity<>(new ResponseDTO("success", "List of All Employees", employees),HttpStatus.OK);		
 	}
@@ -56,7 +56,7 @@ public class EmployeeController {
 			return new ResponseEntity<>(new ResponseDTO("success", "New Employee Registered", savedEmployee), HttpStatus.OK);
 		}catch (RuntimeException ex) {
 			ex.printStackTrace();
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+			return new ResponseEntity<>(new ResponseDTO("error","Employee Registration failed" ,null),HttpStatus.NOT_FOUND);
 		}
 	}	
 	//req handling method to update existing Employee
@@ -69,17 +69,23 @@ public class EmployeeController {
 			return new ResponseEntity<>(new ResponseDTO("success", "Updated Existing Employee", updatedDetails),HttpStatus.OK);
 		}catch (RuntimeException ex) {
 			ex.printStackTrace();
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+			return new ResponseEntity<>(new ResponseDTO("error","Employee Updation failed" ,null),HttpStatus.NOT_FOUND);
 		}
 	}
 	
 	//req handling method to delete existing employee
 	@DeleteMapping("/{eid}")
-	public String deleteEmployee(@PathVariable int eid)
+	public ResponseEntity<?> deleteEmployee(@PathVariable int eid)
 	{
-		System.out.println("in del menu "+eid);
-		return service.deleteEmployee(eid);
-	}	
+		System.out.println("in del customer "+eid);
+		// check if user exists
+		Optional<Employee> optional = service.findById(eid);
+		if (optional.isPresent()) {
+			service.deleteById(eid);
+			return new ResponseEntity<>(new ResponseDTO("success","Employee deleted with ID " + eid,null), HttpStatus.OK);
+		} else
+			return new ResponseEntity<>(new ResponseDTO("error","Employee deletion failed" ,null), HttpStatus.NOT_ACCEPTABLE);		
+	}
 	
 	//REST API for employee login
 	@PostMapping("/login")
@@ -91,7 +97,7 @@ public class EmployeeController {
 		if(e==null)
 		{
 			System.out.println("in login null return ");
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+			return new ResponseEntity<>(new ResponseDTO("error","Employee Login failed" ,null),HttpStatus.NOT_FOUND);
 		}else
 		{
 			System.out.println("in login credentials return ");
@@ -119,7 +125,7 @@ public class EmployeeController {
 		if(eDetails.isPresent())
 			return new ResponseEntity<>(new ResponseDTO("success", "Get Employee details by Employee ID", eDetails.get()), HttpStatus.OK);
 		//valid name : HTTP 200, marshalled menu details
-		return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		return new ResponseEntity<>(new ResponseDTO("error","Failed to get employee details by ID " ,null),HttpStatus.NOT_FOUND);
 	}
 	
 }

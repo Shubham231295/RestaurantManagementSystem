@@ -63,10 +63,19 @@ public class CustomerServiceImpl implements ICustomerService {
 		return dao.count();
 	}
 
+	
+
 	@Override
-	public String deleteCustomer(int customerId) {
-		dao.deleteById(customerId);
-		return "Customer with ID = "+customerId+" deleted";
+	public Optional<Customer> findById(int cid) {
+		// TODO Auto-generated method stub
+		return dao.findById(cid);
+	}
+
+	@Override
+	public void deleteById(int cid) {
+		// TODO Auto-generated method stub
+		dao.deleteById(cid);
+		
 	}
 
 	@Override

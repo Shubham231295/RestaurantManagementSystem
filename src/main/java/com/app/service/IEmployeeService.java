@@ -12,10 +12,7 @@ public interface IEmployeeService {
 	List<Employee> getAllEmployees();
 	
 	//register(add) new Employee
-	Employee registerEmployeeDetails(Employee transientPOJO);
-	
-	//delete existing employee
-	String deleteEmployee(int employeeId);
+	Employee registerEmployeeDetails(Employee transientPOJO);	
 	
 	//update Employee details
 	Employee updateEmployeeDetails(int empId,Employee detachedPOJO);
@@ -27,4 +24,8 @@ public interface IEmployeeService {
 	
 	//get employee details by ID
 	Optional<Employee> getEmployeeDetails(Integer eId);
+
+	Optional<Employee> findById(int eid);
+
+	void deleteById(int eid);
 }

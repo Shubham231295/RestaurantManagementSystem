@@ -22,12 +22,16 @@ public interface ICustomerService {
 	Customer validateCustomer(String username, String password);
 	
 	//delete existing employee
-	String deleteCustomer(int customerId);
+	//Optional<Customer> deleteCustomer(Integer customerId);
 	
 	Long getCountOfCustomers();
 	
 	//get customer details by ID
 	Optional<Customer> getCustomerDetails(Integer cId);
+
+	Optional<Customer> findById(int cid);
+
+	void deleteById(int cid);
 	
 	
 	

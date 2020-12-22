@@ -40,7 +40,7 @@ public class MenuController {
 		List<Menu> menus = service.getAllMenus();
 		if(menus.isEmpty()) {
 			//empty product list : set sts code : HTTP 204 (no contents)
-			return new ResponseEntity<>(HttpStatus.NO_CONTENT); 
+			return new ResponseEntity<>(new ResponseDTO("error","Menu List has no contents." ,null),HttpStatus.NO_CONTENT); 
 		}
 		//in case of non empty list : OK, send the list
 		return new ResponseEntity<>(new ResponseDTO("success", "List of All Menus", menus), HttpStatus.OK);		
@@ -55,7 +55,7 @@ public class MenuController {
 		if(menuDetails.isPresent())
 			return new ResponseEntity<>(new ResponseDTO("success", "Get menu details by Menu ID", menuDetails.get()), HttpStatus.OK);
 		//valid name : HTTP 200, marshalled menu details
-		return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		return new ResponseEntity<>(new ResponseDTO("error","Menu details not Found BY ID"+ details ,null),HttpStatus.NOT_FOUND);
 	}
 	//req handling method to create a new product : post
 	@PostMapping
@@ -67,7 +67,7 @@ public class MenuController {
 			return new ResponseEntity<>(new ResponseDTO("success", "Addition of New Menu", savedMenu), HttpStatus.OK);
 		}catch (RuntimeException e) {
 			e.printStackTrace();
-			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+			return new ResponseEntity<>(new ResponseDTO("error","Menu addition failed." ,null),HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 	
@@ -78,19 +78,25 @@ public class MenuController {
 		System.out.println("in update "+menuId+" "+m);
 		try {
 			Menu updatedDetails = service.updateMenuDetails(menuId, m);
-			return new ResponseEntity<>(new ResponseDTO("success", "Successfull Login", updatedDetails),HttpStatus.OK);
+			return new ResponseEntity<>(new ResponseDTO("success", "Menu Updated successfully", updatedDetails),HttpStatus.OK);
 		}catch (RuntimeException e) {
 			e.printStackTrace();
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+			return new ResponseEntity<>(new ResponseDTO("error","Menu Updation Failed." ,null),HttpStatus.NOT_FOUND);
 		}
 		
 	}
 	//req handling method to delete existing menu
 	@DeleteMapping("/{mid}")
-	public String deleteMenu(@PathVariable int mid)
+	public ResponseEntity<?> deleteEmployee(@PathVariable int mid)
 	{
 		System.out.println("in del menu "+mid);
-		return service.deleteMenu(mid);
+		// check if user exists
+		Optional<Menu> optional = service.findById(mid);
+		if (optional.isPresent()) {
+			service.deleteById(mid);
+			return new ResponseEntity<>(new ResponseDTO("success","Menu deleted with ID " + mid,null), HttpStatus.OK);
+		} else
+			return new ResponseEntity<>(new ResponseDTO("error","Employee deletion failed" ,null), HttpStatus.NOT_ACCEPTABLE);		
 	}
 
 }

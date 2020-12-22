@@ -43,7 +43,7 @@ public class CustomerController {
 		List<Customer> customers = service.getAllCustomers();
 		if(customers.isEmpty())
 		{
-			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+			return new ResponseEntity<>(new ResponseDTO("error","Customer details list is Empty." ,null),HttpStatus.NO_CONTENT);
 		}
 		return new ResponseEntity<>(new ResponseDTO("success", "List of all Customers", customers), HttpStatus.OK);
 	}
@@ -58,7 +58,7 @@ public class CustomerController {
 			return new ResponseEntity<>(new ResponseDTO("success", "Registered New Customer", savedCustomer), HttpStatus.OK);
 		}catch (RuntimeException e) {
 			e.printStackTrace();
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+			return new ResponseEntity<>(new ResponseDTO("error","New Customer registration failed." ,null),HttpStatus.NOT_FOUND);
 		}
 	}
 	
@@ -72,7 +72,7 @@ public class CustomerController {
 			return new ResponseEntity<>(new ResponseDTO("success", "Updated existing Customer", updatedDetails), HttpStatus.OK);
 		}catch (RuntimeException e) {
 			e.printStackTrace();
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+			return new ResponseEntity<>(new ResponseDTO("error","Customer Updation failed." ,null),HttpStatus.NOT_FOUND);
 		}
 	}	
 	//req handling method to login to customer
@@ -85,7 +85,7 @@ public class CustomerController {
 		if(c==null)
 		{
 			System.out.println("in login null return ");
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);			
+			return new ResponseEntity<>(new ResponseDTO("error","Customer Login failed" ,null),HttpStatus.NOT_FOUND);			
 		}else
 		{
 			System.out.println("in login credentials return ");
@@ -105,11 +105,16 @@ public class CustomerController {
 	
 	//req handling method to delete existing customer
 	@DeleteMapping("/{cid}")
-	public String deleteCustomer(@PathVariable int cid)
+	public ResponseEntity<?> deleteCustomer(@PathVariable int cid)
 	{
 		System.out.println("in del customer "+cid);
-		service.deleteCustomer(cid);
-		return "success";
+		// check if user exists
+		Optional<Customer> optional = service.findById(cid);
+		if (optional.isPresent()) {
+			service.deleteById(cid);
+			return new ResponseEntity<>(new ResponseDTO("success","Customer deleted with ID " + cid,null), HttpStatus.OK);
+		} else
+			return new ResponseEntity<>(new ResponseDTO("error","Customer deletion failed" ,null), HttpStatus.NOT_ACCEPTABLE);		
 	}
 	
 	//REST API to find the details of customer by ID
@@ -122,7 +127,7 @@ public class CustomerController {
 		if(cDetails.isPresent())
 			return new ResponseEntity<>(new ResponseDTO("success", "Get Customer details by Customer ID", cDetails.get()), HttpStatus.OK);
 		//valid name : HTTP 200, marshalled menu details
-		return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		return new ResponseEntity<>(new ResponseDTO("error","Customer details fetching failed." ,null),HttpStatus.NOT_FOUND);
 	}
 		
 }

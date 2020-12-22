@@ -57,12 +57,15 @@ public class MenuServiceImpl implements IMenuService {
 	}
 
 	@Override
-	public String deleteMenu(int menuId) {
-		dao.deleteById(menuId);
-		return "Menu with ID = "+menuId+" deleted...";
+	public Optional<Menu> findById(int mid) {
+		// TODO Auto-generated method stub
+		return dao.findById(mid);
 	}
-	
-	
-	
 
+	@Override
+	public void deleteById(int mid) {
+		// TODO Auto-generated method stub
+		dao.deleteById(mid);
+		
+	}
 }

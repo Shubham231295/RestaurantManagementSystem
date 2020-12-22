@@ -15,6 +15,8 @@ public interface IMenuService {
 	//update menu details
 	Menu updateMenuDetails(int menuId,Menu detachedPOJO);
 	//delete existing details
-	String deleteMenu(int menuId);
+	Optional<Menu> findById(int mid);
+	void deleteById(int mid);
+	
 	
 }

@@ -34,12 +34,18 @@ public class EmployeeServiceImpl implements IEmployeeService {
 	public Employee registerEmployeeDetails(Employee transientPOJO) {
 		// TODO Auto-generated method stub
 		return dao.save(transientPOJO);
+	}	
+	
+	@Override
+	public Optional<Employee> findById(int eid) {
+		// TODO Auto-generated method stub
+		return dao.findById(eid);
 	}
 
 	@Override
-	public String deleteEmployee(int employeeId) {
-		dao.deleteById(employeeId);
-		return "Employee with ID = "+employeeId+" deleted.";
+	public void deleteById(int eid) {
+		// TODO Auto-generated method stub
+		dao.deleteById(eid);
 	}
 
 	@Override
