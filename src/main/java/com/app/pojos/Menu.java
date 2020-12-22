@@ -26,7 +26,7 @@ public class Menu {
 	private String menu_category;
 	
 	@Min(50)
-	private double price;
+	private float price;
 			
 	
 	
@@ -35,7 +35,7 @@ public class Menu {
 	}
 	
 	public Menu(Integer menu_id, String mname, String description,
-			Integer quantity, String menu_category, @Min(50) double price) {
+			Integer quantity, String menu_category, @Min(50) float price) {
 		super();
 		this.menu_id = menu_id;
 		this.mname = mname;
@@ -70,10 +70,10 @@ public class Menu {
 	public void setMenu_category(String menu_category) {
 		this.menu_category = menu_category;
 	}
-	public double getPrice() {
+	public float getPrice() {
 		return price;
 	}
-	public void setPrice(double price) {
+	public void setPrice(float price) {
 		this.price = price;
 	}
 	// toString method

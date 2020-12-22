@@ -61,7 +61,8 @@ public class CartController {
 		if (optional.isPresent()) {
 			Cart existingItems = optional.get();// DETACHED
 			System.out.println("existing details " + existingItems);
-			existingItems.setMenu_id(cart.getMenu_id());			
+			existingItems.setMenu_id(cart.getMenu_id());	
+			existingItems.setMname(cart.getMname());
 			existingItems.setPrice(cart.getPrice());
 			existingItems.setQuantity(cart.getQuantity());
 			existingItems.setTotal_amount(cart.getTotal_amount());
