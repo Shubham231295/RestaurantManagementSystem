@@ -16,10 +16,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.app.dto.Email;
 import com.app.dto.Login;
 import com.app.dto.ResponseDTO;
 import com.app.pojos.Customer;
 import com.app.service.ICustomerService;
+import com.app.service.MailService;
 
 @RestController
 @RequestMapping("/customers")
@@ -28,6 +30,8 @@ public class CustomerController {
 	// dependency
 	@Autowired
 	private ICustomerService service;
+	@Autowired
+	private MailService mailService;
 	
 	
 	public CustomerController()
@@ -129,5 +133,33 @@ public class CustomerController {
 		//valid name : HTTP 200, marshalled menu details
 		return new ResponseEntity<>(new ResponseDTO("error","Customer details fetching failed." ,null),HttpStatus.NOT_FOUND);
 	}
+	
+	//req handling method to login to customer
+	@PostMapping("/email/{customer_id}")
+	public ResponseEntity<?> sendEmail(@PathVariable Integer customer_id,Email email)
+	{
+		System.out.println(customer_id);
+		Optional<Customer> optional = service.findById(customer_id);
+		
+		if(optional.isPresent())
+		{
+			Customer existingCust = optional.get();
+			//Email email2 = new Email();
+			email.setDestEmail(existingCust.getEmail());
+			System.out.println(existingCust.getEmail());
+			email.setSubject("Restaurant Order");
+			email.setMsg("Your Order is placed");
+			//email.setMsg("Your Order is Placed.");
+			mailService.sendEmail(email);			
+		}
+		return new ResponseEntity<>(new ResponseDTO("success", "Successfully mail sent.", mailService), HttpStatus.OK);
+	}
+	
+	
+		
+	
+	
+	
+	
 		
 }

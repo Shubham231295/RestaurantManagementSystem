@@ -46,6 +46,7 @@ public class CustomerServiceImpl implements ICustomerService {
 			customer.setCountry(c1.getCountry());
 			customer.setZip(c1.getZip());
 			customer.setPhone_no(c1.getPhone_no());
+			customer.setEmail(c1.getEmail());
 			return customer;
 		}
 		throw new CustomerNotFoundEception("Invalid Customer ID");		

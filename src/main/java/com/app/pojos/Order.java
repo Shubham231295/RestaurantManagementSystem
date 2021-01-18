@@ -8,37 +8,40 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "cart_table")
-public class Cart {
+@Table(name = "order_table")
+public class Order {
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
+	@GeneratedValue(strategy = GenerationType.IDENTITY)	
+	private Integer id;			
 	
-	@Column(name = "customer_id")
+	@Column(length = 40)
 	private Integer customer_id;
 	
-	@Column(name = "menu_id")
+	@Column(length = 40)
 	private Integer menu_id;
 	
-	@Column(name = "mname")
+	@Column(length = 60)
 	private String mname;
 	
-	@Column(name = "price")
+	@Column(length = 10)
 	private float price;
 	
-	@Column(name = "total_amount")
+	@Column(length = 20)
 	private float total_amount;
 	
-	@Column(name = "quantity")
+	@Column(length = 10)
 	private Integer quantity;
-	public Cart() {
-		super();
+	
+	@Column(length = 6)
+	private Boolean order_status=false;
+	
+		
+	public Order() {
+		System.out.println("in ctor of "+getClass().getName());
 	}
 
-	
-
-	public Cart(Integer id, Integer customer_id, Integer menu_id, String mname, float price, float total_amount,
-			Integer quantity) {
+	public Order(Integer id, Integer customer_id, Integer menu_id, String mname, float price, float total_amount,
+			Integer quantity, Boolean order_status) {
 		super();
 		this.id = id;
 		this.customer_id = customer_id;
@@ -47,16 +50,7 @@ public class Cart {
 		this.price = price;
 		this.total_amount = total_amount;
 		this.quantity = quantity;
-	}
-
-
-	
-	public Integer getCustomer_id() {
-		return customer_id;
-	}
-
-	public void setCustomer_id(Integer customer_id) {
-		this.customer_id = customer_id;
+		this.order_status = order_status;
 	}
 
 	public Integer getId() {
@@ -67,6 +61,22 @@ public class Cart {
 		this.id = id;
 	}
 
+	public Boolean getOrder_status() {
+		return order_status;
+	}
+
+	public void setOrder_status(Boolean order_status) {
+		this.order_status = order_status;
+	}
+
+	public Integer getCustomer_id() {
+		return customer_id;
+	}
+
+	public void setCustomer_id(Integer customer_id) {
+		this.customer_id = customer_id;
+	}
+
 	public Integer getMenu_id() {
 		return menu_id;
 	}
@@ -74,7 +84,6 @@ public class Cart {
 	public void setMenu_id(Integer menu_id) {
 		this.menu_id = menu_id;
 	}
-	
 
 	public String getMname() {
 		return mname;
@@ -107,6 +116,5 @@ public class Cart {
 	public void setQuantity(Integer quantity) {
 		this.quantity = quantity;
 	}
-	
-	
+
 }

@@ -60,6 +60,7 @@ public class EmployeeServiceImpl implements IEmployeeService {
 			employee.setUsername(e1.getUsername());
 			employee.setPassword(e1.getPassword());
 			employee.setRole(e1.getRole());
+			employee.setStatus(e1.getStatus());
 			return employee;
 		}
 		

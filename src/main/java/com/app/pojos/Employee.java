@@ -25,6 +25,17 @@ public class Employee {
 	private String password;
 	@Column(length = 50)
 	private String role;
+	@Column(length = 6)
+	private Boolean status=false;
+	
+	
+	
+	public Boolean getStatus() {
+		return status;
+	}
+	public void setStatus(Boolean status) {
+		this.status = status;
+	}
 	public Integer getEmp_id() {
 		return emp_id;
 	}
@@ -67,9 +78,5 @@ public class Employee {
 	public void setRole(String role) {
 		this.role = role;
 	}
-	@Override
-	public String toString() {
-		return "Employee [emp_id=" + emp_id + ", emp_first_name=" + emp_first_name + ", emp_last_name=" + emp_last_name
-				+ ", emp_phone_no=" + emp_phone_no + ", username=" + username + ", role="+ role + "]";
-	}		
+			
 }

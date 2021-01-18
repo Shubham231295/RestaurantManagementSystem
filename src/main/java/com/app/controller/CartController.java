@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.app.dao.ICartDao;
 import com.app.dto.ResponseDTO;
+import com.app.dto.ResponseListDTO;
 import com.app.pojos.Cart;
 
 @RestController
@@ -51,6 +52,7 @@ public class CartController {
 	@PostMapping
 	public ResponseEntity<?> addMenuInCartDetails(@RequestBody Cart c) {
 		System.out.println("in add MenuCart" + c);
+		c.setTotal_amount(c.getPrice()*c.getQuantity());
 		return new ResponseEntity<>(new ResponseDTO("success","New Items added in cart.", dao.save(c)), HttpStatus.CREATED);
 	}
 	
@@ -61,6 +63,7 @@ public class CartController {
 		if (optional.isPresent()) {
 			Cart existingItems = optional.get();// DETACHED
 			System.out.println("existing details " + existingItems);
+			existingItems.setCustomer_id(cart.getCustomer_id());
 			existingItems.setMenu_id(cart.getMenu_id());	
 			existingItems.setMname(cart.getMname());
 			existingItems.setPrice(cart.getPrice());
@@ -85,10 +88,32 @@ public class CartController {
 			 //throw new ResourceNotFoundException("Cart ID Invalid : Item deletion failed.");
 			return new ResponseEntity<>(new ResponseDTO("error","Cart Item deletion failed" ,null), HttpStatus.NOT_ACCEPTABLE);
 	}
+	
+	
+	//REST API to find the cart items by customer_id
+	@GetMapping("/by_cust_id/{customer_id}")
+	public ResponseEntity<?> getCustomerById(@PathVariable Integer customer_id) {
+		//System.out.println("in get Tech dtls " + menuCartId);
+		List<Cart> optional = dao.getCartByCustomerIdDetails(customer_id);
+		
+			return new ResponseEntity<>(new ResponseListDTO("success","Details Found",optional),HttpStatus.OK);
+		// invalid id
+		//return new ResponseEntity<>(new ResponseDTO("error","Menu id not Found",null),HttpStatus.NOT_FOUND);
+	}
+	
+	//REST API to delete the cart items by customer_id
+	@DeleteMapping("/by_cust_id/{customer_id}")
+	public ResponseEntity<?> deleteCustomerByIdDetails(@PathVariable  Integer customer_id) {
+		System.out.println("in delete cart items " + customer_id);
+		// check if user exists
+		
+		dao.deleteCartByCustomerIdDetails(customer_id);
+		return new ResponseEntity<>(new ResponseDTO("success","Cart Item deleted with Customer ID " + customer_id,null), HttpStatus.OK);
+		
+	}
+	
+	
 
-	
-	
-	
 	
 	
 	
