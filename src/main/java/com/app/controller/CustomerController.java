@@ -134,7 +134,7 @@ public class CustomerController {
 		return new ResponseEntity<>(new ResponseDTO("error","Customer details fetching failed." ,null),HttpStatus.NOT_FOUND);
 	}
 	
-	//req handling method to login to customer
+	
 	@PostMapping("/email/{customer_id}")
 	public ResponseEntity<?> sendEmail(@PathVariable Integer customer_id,Email email)
 	{
